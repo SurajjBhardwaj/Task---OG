@@ -7,15 +7,19 @@ export default function PostComponent() {
   const [posts, setPosts] = useState([]);
   const [title, setTitle] = useState("");
   const [fetchAgain, setFetchAgain] = useState(false);
+  // const [loading, setLoading] = useState(false);
 
   // Fetch posts from the server
   const fetchPosts = async () => {
     try {
+      // setLoading(true);
       const response = await fetch("/api/post");
       const data = await response.json();
       setPosts(data.data || []);
     } catch (error) {
       console.error("Failed to fetch posts:", error);
+    } finally {
+      // setLoading(false);
     }
   };
 
@@ -116,6 +120,13 @@ export default function PostComponent() {
 
       {/* Posts and comments */}
       <div className="space-y-4">
+
+        {posts.length === 0 && (
+          <p className="text-center text-gray-500">loading...</p>
+        
+        )}
+
+
         {posts.map((post) => (
           <div
             key={post._id}
